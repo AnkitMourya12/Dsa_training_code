@@ -1,51 +1,62 @@
+//custom exceptions
 #include<iostream>
+#include<stdexcept>
 #include<exception>
 #include<windows.h>
 using namespace std;
-
-class Overspeed:public exception{
-    int speed;
-    public:
-
-    void getspeed(){
-        cout<<"ur car speed id"<<speed<<endl;
-
-    }
-    void setspeed(){
-        this->speed=speed;
-    }
-
-};
-class car {
-    int speed;
-    public:
-   car()
-   {
-    speed=0;
-    cout<<"car speed is"<<speed<<endl;
-   }
-
-   void speedlimit(){
-    for(; ; ){
-        speed+=10;
-
-        sleep(2000);
-        if(speed>250){
-            Overspeed s;
-            s.setSpeed(speed);
-            throw s;
-        }
-    }
-   }
+class overspeed: public exception{
+	int speed;
+	public:
+		const char *what()
+		{
+			return "check out car speed !!";
+		}
+		void getspeed()
+		{
+			cout<<"car speed is : "<<speed<<endl;
+		}
+		void setspeed(int speed)
+		{
+			this->speed=speed;
+		}
 };
 
-int main(){
-    car ob;
-    try{
-        ob.speedlimit();
-    }
-    catch(Overspeed s){
-        cout<<s.what()<<endl;
-        s.getspeed();
-    }
+class car{
+	int speed;
+	   public:
+	   	car()
+	   	{
+	   		speed=0;
+	   		cout<<"car speed is : "<<speed<<endl;
+		   }
+		void speedlimit()
+		{
+			for(; ;)
+			{
+				speed+=10;
+				cout<<"car speed is : "<<speed<<endl;
+				Sleep(1000);
+				if(speed>250)
+				{
+					overspeed s;
+					s.setspeed(speed);
+					throw s;
+				}
+			}
+		}
+};
+int main()
+{
+	car obj;
+	try{
+		obj.speedlimit();
+			
+	}
+catch(overspeed s)
+{
+	cout<<s.what()<<endl;
+	s.getspeed();
+}
+
+	return 0;
 }
